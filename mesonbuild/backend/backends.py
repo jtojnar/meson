@@ -455,6 +455,21 @@ class Backend:
                 args.extend(self.environment.coredata.get_external_link_args(target.for_machine, lang))
             except Exception:
                 pass
+
+        nix_ldflags = os.environ.get('NIX_LDFLAGS', '').split()
+        next_is_path = False
+        # Try to add rpaths set by user or ld-wrapper so that they are not removed.
+        # Based on https://github.com/NixOS/nixpkgs/blob/69711a2f5ffe8cda208163be5258266172ff527f/pkgs/build-support/bintools-wrapper/ld-wrapper.sh#L148-L177
+        for flag in nix_ldflags:
+            if flag == '-rpath' or flag == '-L':
+                next_is_path = True
+            elif next_is_path or flag.startswith('-L/'):
+                if flag.startswith('-L/'):
+                    flag = flag[2:]
+                if flag.startswith('@storeDir@'):
+                    dirs.add(flag)
+                next_is_path = False
+
         for arg in args:
             if arg.startswith('-Wl,-rpath='):
                 for dir in arg.replace('-Wl,-rpath=','').split(':'):
