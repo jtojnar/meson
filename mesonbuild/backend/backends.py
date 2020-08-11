@@ -457,6 +457,7 @@ class Backend:
                 pass
 
         nix_ldflags = os.environ.get('NIX_LDFLAGS', '').split()
+        print('***********************', nix_ldflags)
         next_is_path = False
         # Try to add rpaths set by user or ld-wrapper so that they are not removed.
         # Based on https://github.com/NixOS/nixpkgs/blob/69711a2f5ffe8cda208163be5258266172ff527f/pkgs/build-support/bintools-wrapper/ld-wrapper.sh#L148-L177

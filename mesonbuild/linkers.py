@@ -597,6 +597,7 @@ class GnuLikeDynamicLinkerMixin:
         # In order to avoid relinking for RPATH removal, the binary needs to contain just
         # enough space in the ELF header to hold the final installation RPATH.
         paths = ':'.join(all_paths)
+        print('+++++++++++++++++++++++', paths, install_rpath)
         if len(paths) < len(install_rpath):
             padding = 'X' * (len(install_rpath) - len(paths))
             if not paths:
