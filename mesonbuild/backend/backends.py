@@ -466,7 +466,7 @@ class Backend:
             elif next_is_path or flag.startswith('-L/'):
                 if flag.startswith('-L/'):
                     flag = flag[2:]
-                if flag.startswith('@storeDir@'):
+                if flag.startswith('/nix/store'):
                     dirs.add(flag)
                 next_is_path = False
 
